@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC } from "react";
+import Users from "./modules/users";
+import { Switch, Route } from "react-router-dom";
+import Comments from "./modules/comments";
 
-function App() {
+const App: FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Switch>
+          <Route path="/" exact render={() => <Users />} />
+          <Route path="/comments/:id" exact render={() => <Comments />} />
+        </Switch>
       </header>
     </div>
   );
-}
+};
 
 export default App;
