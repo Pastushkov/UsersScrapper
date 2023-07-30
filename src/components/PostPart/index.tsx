@@ -1,17 +1,23 @@
 import React, { FC } from "react";
-import { Post } from "./style";
-import { IPost } from "../../modules/users/store/types";
 import { useHistory } from "react-router-dom";
+import { ForUser, Post } from "./style";
+import { IPost } from "../../modules/users/store/types";
 
 interface IProps {
   posts: IPost[];
+  selectedUser?: number | null;
 }
 
-const PostPart: FC<IProps> = ({ posts }) => {
+const PostPart: FC<IProps> = ({ posts, selectedUser }) => {
   const history = useHistory();
 
   return (
     <>
+      {selectedUser && (
+        <ForUser>
+          Posts for user <b>#{selectedUser}</b>
+        </ForUser>
+      )}
       {posts?.map(({ body, title, id }) => (
         <Post
           onClick={() => {

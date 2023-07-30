@@ -8,7 +8,7 @@ import {
   put,
 } from "redux-saga/effects";
 import { usersTypes } from "./actionTypes";
-import { getPosts, getPostsByUser, getUsersList } from "../api/users.api";
+import { getPosts, getUsersList } from "../api/users.api";
 import { FetchPosts } from "./types";
 
 function* fetchUserDataSaga() {
@@ -20,43 +20,32 @@ function* fetchUserDataSaga() {
         payload: response?.data,
       });
     }
-  } catch (e: any) {
+  } catch (e) {
     // error
+    console.log(e);
+    
     yield put({
-      type: usersTypes.ERROR_FETCH_USERS_LIST,
-      payload: "ERROR while get users list ",
+      type: usersTypes.SET_USERS_LIST,
+      payload: [],
     });
   }
 }
 
-function* fetchPosts(payload: FetchPosts) {
+function* fetchPosts({ payload }: FetchPosts) {
   try {
-    const id = payload.payload;
-    if (!id) {
-      const response: AxiosResponse = yield call(getPosts);
-      if (response.data) {
-        yield put({
-          type: usersTypes.SET_POSTS,
-          payload: response?.data,
-        });
-      }
-    } else {
-      const response: AxiosResponse<{ payload: any }> = yield call(
-        getPostsByUser,
-        id
-      );
-      if (response.data) {
-        yield put({
-          type: usersTypes.SET_POSTS,
-          payload: response?.data,
-        });
-      }
+    const response: AxiosResponse = yield call(getPosts, payload);
+    if (response.data) {
+      yield put({
+        type: usersTypes.SET_POSTS,
+        payload: response?.data,
+      });
     }
-  } catch (e: any) {
+  } catch (e) {
     // error
+    console.log(e);
     yield put({
-      type: usersTypes.ERROR_FETCH_USERS_LIST,
-      payload: "ERROR while get users list ",
+      type: usersTypes.SET_POSTS,
+      payload: [],
     });
   }
 }

@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Header, Wrapper, Container } from "./style";
 import { Loader } from "../../components/loader/Loader";
 import { RootState } from "../../redux/reducers";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts, fetchUserList } from "./store/actions";
-import Select from "../../components/select";
+import CustomSelect from "../../components/CustomSelect";
 import PostPart from "../../components/PostPart";
 
 const Users: FC = () => {
@@ -24,17 +24,21 @@ const Users: FC = () => {
     }
   }, [list]);
 
-  const option = useMemo(
-    () =>
-      list?.map(({ id, name }) => ({
+  const option = useMemo(() => {
+    if (!list) return [];
+    return [
+      ...list.map(({ id, name }) => ({
         value: id,
         label: name,
       })),
+      {
+        label: "-",
+        value: "",
+      },
+    ];
+  }, [list]);
 
-    [list]
-  );
-
-  const handleUserChange = (value: any) => {
+  const handleUserChange = (value: number | null) => {
     setSelectedUser(value);
   };
 
@@ -47,15 +51,18 @@ const Users: FC = () => {
       <Header>Users Scrapper</Header>
       <Loader isLoading={isLoading}>
         <Container>
-          <div></div>
+          <div />
           <div>
-            Select User:{" "}
-            <Select
-              options={[...option, { label: "-", value: "" }]}
-              onChange={(value) => handleUserChange(value)}
-            ></Select>
+            <CustomSelect
+              options={option}
+              onChange={(value :number | null) => handleUserChange(value)}
+              label="Select User"
+            />
             <div>
-              <PostPart posts={posts.slice(0, 10)} />
+              <PostPart
+                posts={posts.slice(0, 10)}
+                selectedUser={selectedUser}
+              />
             </div>
           </div>
         </Container>

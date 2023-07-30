@@ -11,6 +11,10 @@ export const Header = styled.div`
 
   .arrow {
     margin-right: 10px;
+    cursor: pointer;
+    &:hover {
+      color: red;
+    }
   }
 `;
 export const Comment = styled.div`
@@ -20,7 +24,7 @@ export const Comment = styled.div`
   justify-content: center;
   gap: 30px;
   align-items: center;
-  max-width: 450px;
+  max-width: 550px;
   margin-top: 10px;
 
   border: 1px solid;
@@ -28,5 +32,10 @@ export const Comment = styled.div`
   border-radius: 8px;
   .email {
     font-weight: 800;
+    font-size: 20px;
+  }
+  .body {
+    font-size: 18px;
+    text-align: justify;
   }
 `;
